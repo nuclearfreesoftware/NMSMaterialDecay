@@ -1,5 +1,4 @@
 #include "NMSMaterialDecaySource.hh"
-#include "AnalysisSetup.hh"
 
 NMSMaterialDecaySource::NMSMaterialDecaySource() {
   startSourceTimeDistribution = 0;
@@ -127,8 +126,8 @@ void NMSMaterialDecaySource::GeneratePrimaryVertex(G4Event* anEvent) {
     LoadSources();
   }
   G4double time = GetNextEventTime();
-  G4AnalysisManager* anaman = G4AnalysisManager::Instance();
-  anaman->FillH1(1, time * second);
+  //  G4AnalysisManager* anaman = G4AnalysisManager::Instance();
+  //  anaman->FillH1(1, time * second);
 
   SetTime(time);
   sourceGenerator->GeneratePrimaryVertex(anEvent);
