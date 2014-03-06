@@ -246,33 +246,34 @@ void NMSMaterialDecaySource::LoadSources() {
 	  }
 	}
 	// ??? what happens if no decay - fix
-	if(spontaneousFissionNeutron || spontaneousFissionGamma) {
-	  // N * branching * lambda = N * branching * tao
-	  tmpactivity = relabvec[j] * elementatoms * sfbranching / lifetime;
-	  materialIntensity += tmpactivity;
-	  sourceGenerator->AddaSource(tmpactivity);
-	  sourceGenerator->GetCurrentSource()->setIsotope(z * 10000 + a * 10);
-	  if(spontaneousFissionNeutron && spontaneousFissionGamma) {
-	    sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_SF);
+	if(lifetime != -1) {
+	  if(spontaneousFissionNeutron || spontaneousFissionGamma) {
+	    // N * branching * lambda = N * branching * tao
+	    tmpactivity = relabvec[j] * elementatoms * sfbranching / lifetime;
+	    materialIntensity += tmpactivity;
+	    sourceGenerator->AddaSource(tmpactivity);
+	    sourceGenerator->GetCurrentSource()->setIsotope(z * 10000 + a * 10);
+	    if(spontaneousFissionNeutron && spontaneousFissionGamma) {
+	      sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_SF);
+	    }
+	    else if (spontaneousFissionNeutron) {
+	      sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_SF_N);
+	    }
+	    else if (spontaneousFissionGamma) {
+	      sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_SF_GAMMA);
+	    }
 	  }
-	  else if (spontaneousFissionNeutron) {
-	    sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_SF_N);
+	  if(alphaDecay) {
+	    // N * branching * lambda = N * branching * tao
+	    tmpactivity = relabvec[j] * elementatoms * alphabranching / lifetime;
+	    materialIntensity += tmpactivity;
+	    sourceGenerator->AddaSource(tmpactivity);
+	    sourceGenerator->GetCurrentSource()->setIsotope(z * 10000 + a * 10);
+	    sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_ALPHA);
 	  }
-	  else if (spontaneousFissionGamma) {
-	    sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_SF_GAMMA);
+	  if(betaDecay) {
 	  }
 	}
-	if(alphaDecay) {
-	  // N * branching * lambda = N * branching * tao
-	  tmpactivity = relabvec[j] * elementatoms * alphabranching / lifetime;
-	  materialIntensity += tmpactivity;
-	  sourceGenerator->AddaSource(tmpactivity);
-	  sourceGenerator->GetCurrentSource()->setIsotope(z * 10000 + a * 10);
-	  sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_ALPHA);
-	}
-	if(betaDecay) {
-	}
-
       } // end isotopes
     } // end elements
 
