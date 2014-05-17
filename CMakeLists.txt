@@ -11,3 +11,7 @@ file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
 add_library(NMSMaterialDecay ${sources} ${headers})
+
+install (FILES ${headers} DESTINATION include)
+install (TARGETS NMSMaterialDecay DESTINATION lib)
+
