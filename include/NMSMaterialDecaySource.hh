@@ -16,6 +16,8 @@
 #include "G4AlphaDecayChannel.hh"
 #include "G4BetaMinusDecayChannel.hh"
 
+#include "G4RunManager.hh"
+
 #include "NMSSingleDecaySource.hh"
 #include "NMSMultipleDecaySource.hh"
 #include "NMSPosDistribution.hh"

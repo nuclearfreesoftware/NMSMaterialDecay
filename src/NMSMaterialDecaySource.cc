@@ -119,10 +119,19 @@ void NMSMaterialDecaySource::SetAlphaNSet(NMSAlphaNSet* startpoints) {
 
 
 void NMSMaterialDecaySource::GeneratePrimaryVertex(G4Event* anEvent) {
+  if(currentSourceMaterial == 0) {
+    G4cout << "NMSMaterialDecaySource - ERROR: No source material has been selected. Please use messenger commands to select a source material. If you haven't defined an appropriate source material in your detector construction, please do so as well" << G4endl;
+    G4cout << "Aborting run!" << G4endl;
+    G4RunManager::GetRunManager()-> AbortRun();
+    return;
+  }
   if(verboseLevel >= 2) {
-    G4cout << "NMSMaterialDecaySource GeneratePrimaryVertex" << G4endl;
+    G4cout << "NMSMaterialDecaySource GeneratePrimaryVertex" << G4endl; // VERBOSEF
   }
   if(!sourcesloaded) {
+    if(verboseLevel >= 2) {
+      G4cout << "NMSMaterialDecaySource: Load Sources" << G4endl; // VERBOSEF
+    }
     LoadSources();
   }
   G4double time = GetNextEventTime();
@@ -197,7 +206,12 @@ void NMSMaterialDecaySource::LoadSources() {
     if(verboseLevel >= 2) {
       G4cout << "================================================================" << G4endl;
       G4cout << "Source Material" << G4endl;
-      G4cout << currentSourceMaterial << G4endl;
+      if(currentSourceMaterial == 0) {
+	G4cout << "Not defined!" << G4endl;
+      }
+      else {
+	G4cout << currentSourceMaterial << G4endl;
+      }
       G4cout << "================================================================" << G4endl;
     }
   }
@@ -277,6 +291,10 @@ void NMSMaterialDecaySource::LoadSources() {
       } // end isotopes
     } // end elements
 
+  }
+  else {
+    G4cout << "Error: No Source Material defined - Can not load sources." << G4endl;
+    return;
   }
   sourcesloaded = true;
   activity = materialIntensity * activeVolume;
