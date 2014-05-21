@@ -12,7 +12,7 @@
 #include "G4SPSPosDistribution.hh"
 #include <vector>
 
-class NMSPosDistribution 
+class NMSPosDistribution
 {
 public:
   NMSPosDistribution();
@@ -21,7 +21,7 @@ public:
   void ClearAll();
   void AddaPosDist(G4SPSPosDistribution* posDist);
   void DeleteaPosDist(G4int);
-  
+
   void SetPosDisType(G4String); // Point, Plane, Surface, Volume
   inline G4String GetPosDisType() { return SourcePosType; };
   void SetPosDisShape(G4String);
@@ -30,7 +30,7 @@ public:
   void ConfineSourceToVolume(G4String);
   void SetCentreCoords(G4ThreeVector);
   inline G4ThreeVector GetCentreCoords() { return CentreCoords; } ;
-  void SetPosRot2(G4ThreeVector); 
+  void SetPosRot2(G4ThreeVector);
   void SetHalfX(G4double);
   inline G4double GetHalfX() { return halfx; } ;
   void SetHalfY(G4double);
@@ -40,6 +40,7 @@ public:
   void SetRadius(G4double);
   inline G4double GetRadius()  { return Radius; };
   void SetRadius0(G4double);
+  inline G4Double GetRadius0() { return Radius0; };
 
 private:
   std::vector<G4SPSPosDistribution*> posVector;
