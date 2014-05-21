@@ -6,8 +6,8 @@ NMSMaterialDecaySource::NMSMaterialDecaySource() {
 
   spontaneousFissionNeutron = true;
   spontaneousFissionGamma = true;
-  alphaDecay = true;
-  betaDecay = true;
+  alphaDecay = false;
+  betaDecay = false;
   alphaN = false;
   sourceGenerator = new NMSMultipleDecaySource();
   posGenerator = sourceGenerator->GetAllPosDist();
