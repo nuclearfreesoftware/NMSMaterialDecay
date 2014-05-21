@@ -38,7 +38,7 @@ public:
 
   // Set / Unset particles produced
   G4bool GetSpontaneousFissionNeutron() {return spontaneousFissionNeutron; };
-  G4bool GetSpontaneousFissionGamma() {retur spontaneousFissionGamma;}
+  G4bool GetSpontaneousFissionGamma() {return spontaneousFissionGamma;}
   G4bool GetAlphaDecay() {return alphaDecay; };
   G4bool GetBetaDecay() {return betaDecay; };
   G4bool GetAlphaN() {return alphaN; };
