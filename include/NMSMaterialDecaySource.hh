@@ -37,7 +37,8 @@ public:
   NMSPosDistribution* GetPosDist() { return posGenerator; };
 
   // Set / Unset particles produced
-  G4bool GetSpontaneousFission() {return spontaneousFissionNeutron; return spontaneousFissionGamma; };
+  G4bool GetSpontaneousFissionNeutron() {return spontaneousFissionNeutron; };
+  G4bool GetSpontaneousFissionGamma() {retur spontaneousFissionGamma;}
   G4bool GetAlphaDecay() {return alphaDecay; };
   G4bool GetBetaDecay() {return betaDecay; };
   G4bool GetAlphaN() {return alphaN; };
