@@ -40,7 +40,7 @@ public:
   void SetRadius(G4double);
   inline G4double GetRadius()  { return Radius; };
   void SetRadius0(G4double);
-  inline G4Double GetRadius0() { return Radius0; };
+  inline G4double GetRadius0() { return Radius0; };
 
 private:
   std::vector<G4SPSPosDistribution*> posVector;
