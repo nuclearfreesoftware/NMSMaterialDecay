@@ -17,14 +17,7 @@ NMSMaterialDecaySource::NMSMaterialDecaySource() {
   materialIntensity = 1;
   activeVolume = 1 * cm * cm * cm;
 
-  // Point Source Cf-252 SF at origin
-  sourceGenerator->AddaSource(1.);
-  sourceGenerator->GetCurrentSource()->setIsotope(982520);
-  sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_SF);
-  posGenerator->SetPosDisType("Point");
-  posGenerator->SetCentreCoords(G4ThreeVector(0,0,0));
-
-  sourcesloaded = true;
+  sourceloaded = false;
 }
 
 NMSMaterialDecaySource::NMSMaterialDecaySource(G4Material* sourceMat) {
