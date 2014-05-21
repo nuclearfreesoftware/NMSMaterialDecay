@@ -17,7 +17,7 @@ NMSMaterialDecaySource::NMSMaterialDecaySource() {
   materialIntensity = 1;
   activeVolume = 1 * cm * cm * cm;
 
-  sourceloaded = false;
+  sourcesloaded = false;
 }
 
 NMSMaterialDecaySource::NMSMaterialDecaySource(G4Material* sourceMat) {
