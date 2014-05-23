@@ -56,6 +56,9 @@ public:
   void GeneratePrimaryVertex(G4Event*);
 
   void SetEventTimeLimits(G4double start, G4double end);
+  G4double GetStartTime() {return startSourceTimeDistribution; };
+  G4double GetEndTime() {return endSourceTimeDistribution; };
+  G4double GetRuntime() {return endSourceTimeDistribution - startSourceTimeDistribution; };
 
   void SetVerboseLevel(G4int i);
 
