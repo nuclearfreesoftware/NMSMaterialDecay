@@ -18,6 +18,8 @@ public:
   NMSPosDistribution();
   ~NMSPosDistribution();
 
+  void SetVerboseLevel(G4int i);
+
   void ClearAll();
   void AddaPosDist(G4SPSPosDistribution* posDist);
   void DeleteaPosDist(G4int);
@@ -43,6 +45,8 @@ public:
   inline G4double GetRadius0() { return Radius0; };
 
 private:
+  G4int verboseLevel;
+
   std::vector<G4SPSPosDistribution*> posVector;
 
   G4String SourcePosType; //Point,Plane,Surface,Volume

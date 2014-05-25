@@ -8,6 +8,11 @@ NMSPosDistribution::~NMSPosDistribution(){
   posVector.clear();
 }
 
+void NMSPosDistribution::SetVerboseLevel(G4int verbose) {
+  verboseLevel = verbose;
+}
+
+
 void NMSPosDistribution::ClearAll(){
   posVector.clear();
 }
@@ -24,15 +29,13 @@ void NMSPosDistribution::AddaPosDist(G4SPSPosDistribution* posDist){
   posDist->SetHalfY(halfy);
   posDist->SetHalfZ(halfz);
 
-  G4cout << "Volume " << VolName << G4endl;
-
   if(Confine) {
-
-    G4cout << "Confine to Volume " << VolName << G4endl;
-
+    if(verboseLevel >= 2) {
+      G4cout << "Confine to Volume " << VolName << G4endl;
+    }
     posDist->ConfineSourceToVolume(VolName);
   }
-
+    
   // Set all Settings for posDist
 }
 

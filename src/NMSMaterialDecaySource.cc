@@ -174,6 +174,7 @@ void NMSMaterialDecaySource::SetTime(G4double time){
 void NMSMaterialDecaySource::SetVerboseLevel(G4int verbose) {
   verboseLevel = verbose;
   sourceGenerator->SetVerboseLevel(verbose);
+  posGenerator->SetVerboseLevel(verbose);
 }
 
 void NMSMaterialDecaySource::LoadSources() {
