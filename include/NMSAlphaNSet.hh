@@ -6,7 +6,7 @@
 #include "NMSAlphaNReaction.hh"
 
 class NMSAlphaNSet : public std::vector<NMSAlphaNReaction> {
-  
+public:  
   NMSAlphaNSet();
   virtual ~NMSAlphaNSet();
 
