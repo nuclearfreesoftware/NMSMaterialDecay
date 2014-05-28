@@ -101,7 +101,7 @@ void NMSMaterialDecaySource::SetBetaDecay(G4bool status) {
 void NMSMaterialDecaySource::SetAlphaNSource(G4bool status) {
   if ( alphaN != status) {
     alphaN = status;
-    sourceloaded = false;
+    sourcesloaded = false;
   }
 }
 
@@ -110,28 +110,8 @@ void NMSMaterialDecaySource::SetAlphaNFile(G4String filename){
   sourcesloaded = false;
 }
 
-void NMSMaterialDecaySource::SetAlphaNSource(G4bool status) {
-  
-  if(status) {
-    alphaN = true;
-    if(alphaNPoints != 0) {
-      delete alphaNPoints;
-    }
-    alphaNPoints = new NMSAlphaNSet;
-    alphaNPoints->loadFromFile(filename);
-
-    //add alpha n source
-  }
-  else {
-    alphaN = false;
-    alphaNPoints = 0;
-    //remove alpha n source
-  }
-}
-
-
 void NMSMaterialDecaySource::GeneratePrimaryVertex(G4Event* anEvent) {
-  if(currentSourceMaterial == 0) {
+  if(currentSourceMaterial == 0 && !alphaN) {
     G4cout << "NMSMaterialDecaySource - ERROR: No source material has been selected. Please use messenger commands to select a source material. If you haven't defined an appropriate source material in your detector construction, please do so as well" << G4endl;
     G4cout << "Aborting run!" << G4endl;
     G4RunManager::GetRunManager()-> AbortRun();
@@ -307,8 +287,15 @@ void NMSMaterialDecaySource::LoadSources() {
 
   }
   else {
-    G4cout << "Error: No Source Material defined - Can not load sources." << G4endl;
-    return;
+    if(alphaN) {
+      sourceGenerator->AddaSource(1);
+      sourceGenerator->GetCurrentSource()->setDecayType(NMSDECAY_ALPHA_N);
+      sourceGenerator->GetCurrentSource()->setAlphaNFile(alphaNFilename);
+    }
+    else {
+      G4cout << "Error: No Source Material defined - Can not load sources." << G4endl;
+      return;
+    }
   }
   sourcesloaded = true;
   activity = materialIntensity * activeVolume;

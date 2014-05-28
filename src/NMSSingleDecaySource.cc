@@ -9,6 +9,7 @@ NMSSingleDecaySource::NMSSingleDecaySource() : G4SingleParticleSource(){
   */
 
   verboseLevel = 0;
+  alphanset = 0;
 
   DecayType = NMSDECAY_ALPHA; // Spontaenous Fission n + gamma
 
@@ -23,6 +24,8 @@ NMSSingleDecaySource::NMSSingleDecaySource() : G4SingleParticleSource(){
 
 NMSSingleDecaySource::NMSSingleDecaySource(G4int iso, G4int type) : G4SingleParticleSource() {
   verboseLevel = 0;
+  alphanset = 0;
+
   //check if we can do isotope + type
   DecayType = type;
   setIsotope(iso);
@@ -130,6 +133,14 @@ void NMSSingleDecaySource::LoadDecay() {
 void NMSSingleDecaySource::setDecayType(G4int type){
   //check if we can do isotope + type
   DecayType = type;
+}
+
+void NMSSingleDecaySource::setAlphaNFile(G4String filename) {
+  if(alphanset != 0) {
+    delete alphanset;
+  }
+  alphanset = new NMSAlphaNSet;
+  alphanset->loadFromFile(filename);
 }
 
 void NMSSingleDecaySource::GenerateSFPrimaryVertex(G4Event *anEvent,  G4PrimaryVertex* vertex) {
@@ -295,36 +306,73 @@ void NMSSingleDecaySource::GenerateBetaPrimaryVertex(G4Event *anEvent,  G4Primar
   // FIX
 }
 
+void NMSSingleDecaySource::GenerateAlphaNPrimaryVertex(G4Event *anEvent) {
+  G4ParticleDefinition* neutron_definition = G4Neutron::Neutron();
+
+  G4int posindex = floor(G4UniformRand() * alphanset->size());
+  NMSAlphaNReaction reaction = alphanset->operator[](posindex);
+  G4PrimaryVertex* vertex = new G4PrimaryVertex(reaction.position, GetParticleTime());
+  G4DynamicParticle* neutron;
+  neutron = new G4DynamicParticle();
+  neutron->SetDefinition(neutron_definition);
+  neutron->SetMomentum(reaction.alphaDirection);
+  
+  NMSPrimaryUserInformation* info = new NMSPrimaryUserInformation();
+  info->SetOrigin(ORIGIN_ALPHA_N);
+
+  G4PrimaryParticle* particle = new G4PrimaryParticle(neutron_definition,
+                                                      reaction.alphaDirection.x(), 
+						      reaction.alphaDirection.y(),
+						      reaction.alphaDirection.z(),
+                                                      reaction.energy);
+  particle->SetUserInformation(info);
+  particle->SetMass(neutron_definition->GetPDGMass());
+  particle->SetCharge(neutron_definition->GetPDGCharge());
+  vertex->SetPrimary(particle);
+  anEvent->AddPrimaryVertex(vertex);
+}
+
 void NMSSingleDecaySource::GeneratePrimaryVertex(G4Event *anEvent) {
 
-  G4ThreeVector source_position = GetPosDist()->GenerateOne();
-
-  if(verboseLevel >= 2) {
-    G4cout << "New Source Event" << G4endl;
-    G4cout << "Time:     " << GetParticleTime() / second << G4endl;
-    G4cout << "Position: " << source_position / cm << G4endl;
-    G4cout << "Position Distribution Type: " << GetPosDist()->GetPosDisType() << G4endl;
+  if(DecayType == NMSDECAY_ALPHA_N) {
+    if(alphanset == 0) {
+      G4cout << "================================================================" << G4endl;
+      G4cout << "Error: NMSSingleDecaySource" << G4endl;
+      G4cout << "No data set of (alpha,n) reaction data has been loaded." << G4endl;
+      exit(0);
+    }
+    GenerateAlphaNPrimaryVertex(anEvent);
   }
+  else {
+    G4ThreeVector source_position = GetPosDist()->GenerateOne();
 
-  G4PrimaryVertex* vertex = new G4PrimaryVertex(source_position, GetParticleTime());
+    if(verboseLevel >= 2) {
+      G4cout << "New Source Event" << G4endl;
+      G4cout << "Time:     " << GetParticleTime() / second << G4endl;
+      G4cout << "Position: " << source_position / cm << G4endl;
+      G4cout << "Position Distribution Type: " << GetPosDist()->GetPosDisType() << G4endl;
+    }
 
-  // depending on decay type generate particles
-  if(DecayType == NMSDECAY_SF or DecayType == NMSDECAY_SF_N or DecayType == NMSDECAY_SF_GAMMA) {
-    // if (verboseLevel >= 1) {
-    //   G4cout << "Spontaneous Fission" << G4endl;
-    // }
-    // output in special function
-    GenerateSFPrimaryVertex(anEvent, vertex);
-  }
-  if(DecayType == NMSDECAY_ALPHA) {
-    GenerateAlphaPrimaryVertex(anEvent, vertex);
-  }
-  if(DecayType == NMSDECAY_BETA) {
-    // if (verboseLevel >= 1) {
-    //   G4cout << "Beta Decay" << G4endl;
-    // }
-    // output ín special function
-    GenerateBetaPrimaryVertex(anEvent, vertex);
+    G4PrimaryVertex* vertex = new G4PrimaryVertex(source_position, GetParticleTime());
+
+    // depending on decay type generate particles
+    if(DecayType == NMSDECAY_SF or DecayType == NMSDECAY_SF_N or DecayType == NMSDECAY_SF_GAMMA) {
+      // if (verboseLevel >= 1) {
+      //   G4cout << "Spontaneous Fission" << G4endl;
+      // }
+      // output in special function
+      GenerateSFPrimaryVertex(anEvent, vertex);
+    }
+    if(DecayType == NMSDECAY_ALPHA) {
+      GenerateAlphaPrimaryVertex(anEvent, vertex);
+    }
+    if(DecayType == NMSDECAY_BETA) {
+      // if (verboseLevel >= 1) {
+      //   G4cout << "Beta Decay" << G4endl;
+      // }
+      // output ín special function
+      GenerateBetaPrimaryVertex(anEvent, vertex);
+    }
   }
 
   if (verboseLevel > 1)

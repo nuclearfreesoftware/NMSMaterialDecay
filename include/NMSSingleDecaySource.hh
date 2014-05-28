@@ -28,6 +28,11 @@
 
 #include "G4SingleParticleSource.hh"
 
+#include "NMSAlphaNSet.hh"
+#include "NMSPrimaryUserInformation.hh"
+
+class NMSPrimaryUserInformation;
+
 #define NMSDECAY_SF 1
 #define NMSDECAY_ALPHA 2
 #define NMSDECAY_BETA 3
@@ -44,10 +49,12 @@ public:
 
   void setIsotope(G4int iso);
   void setDecayType(G4int type);
+  void setAlphaNFile(G4String filename);
 
   void GenerateAlphaPrimaryVertex(G4Event* anEvent, G4PrimaryVertex* vertex);
   void GenerateSFPrimaryVertex(G4Event *anEvent,  G4PrimaryVertex* vertex);
   void GenerateBetaPrimaryVertex(G4Event *anEvent,  G4PrimaryVertex* vertex);
+  void GenerateAlphaNPrimaryVertex(G4Event* anEvent);
   void GeneratePrimaryVertex(G4Event* anEvent);
 
   void SetVerboseLevel(G4int i);
@@ -66,6 +73,8 @@ private:
 
   std::vector<G4double> energyList;
   std::vector<G4double> branchingList;
+
+  NMSAlphaNSet* alphanset;
 
   G4bool decayloaded;
 };

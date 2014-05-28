@@ -54,13 +54,13 @@ void NMSAlphaNSet::loadFromFile(G4String filename) {
 	tempreaction.position.setZ(value * cm);
 	getline(iss, fieldstr, ',');
 	std::istringstream( fieldstr ) >> value;
-	tempreaction.alphaDirection.setX(value * cm);
+	tempreaction.alphaDirection.setX(value);
 	getline(iss, fieldstr, ',');
 	std::istringstream( fieldstr ) >> value;
-	tempreaction.alphaDirection.setY(value * cm);
+	tempreaction.alphaDirection.setY(value);
 	getline(iss, fieldstr, ',');
 	std::istringstream( fieldstr ) >> value;
-	tempreaction.alphaDirection.setZ(value * cm);
+	tempreaction.alphaDirection.setZ(value);
 	getline(iss, fieldstr, ',');
 	std::istringstream( fieldstr ) >> value;
 	tempreaction.energy = value * MeV;

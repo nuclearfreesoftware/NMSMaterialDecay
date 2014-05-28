@@ -50,7 +50,7 @@ public:
   void SetBetaDecay(G4bool status);
   void SetAlphaNSource(G4bool status);
 
-  void SetAlphaNSet(NMSAlphaNFile filename = "std.alphan");
+  void SetAlphaNFile(G4String filename = "std.alphan");
 
   void GeneratePrimaryVertex(G4Event*);
 
@@ -83,7 +83,6 @@ private:
   NMSPosDistribution* posGenerator;
 
   G4String alphaNFilename;
-  NMSAlphaNSet* alphaNPoints;
 
   G4double startSourceTimeDistribution;
   G4double endSourceTimeDistribution;
