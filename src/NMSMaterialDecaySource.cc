@@ -98,16 +98,35 @@ void NMSMaterialDecaySource::SetBetaDecay(G4bool status) {
   }
 }
 
-void NMSMaterialDecaySource::UnsetAlphaN() {
-  alphaN = false;
-  alphaNPoints = 0;
-  //remove alpha n source
+void NMSMaterialDecaySource::SetAlphaNSource(G4bool status) {
+  if ( alphaN != status) {
+    alphaN = status;
+    sourceloaded = false;
+  }
 }
 
-void NMSMaterialDecaySource::SetAlphaNSet(NMSAlphaNSet* startpoints) {
-  alphaN = true;
-  alphaNPoints = startpoints;
-  //add alpha n source
+void NMSMaterialDecaySource::SetAlphaNFile(G4String filename){
+  alphaNFilename = filename;
+  sourcesloaded = false;
+}
+
+void NMSMaterialDecaySource::SetAlphaNSource(G4bool status) {
+  
+  if(status) {
+    alphaN = true;
+    if(alphaNPoints != 0) {
+      delete alphaNPoints;
+    }
+    alphaNPoints = new NMSAlphaNSet;
+    alphaNPoints->loadFromFile(filename);
+
+    //add alpha n source
+  }
+  else {
+    alphaN = false;
+    alphaNPoints = 0;
+    //remove alpha n source
+  }
 }
 
 
@@ -179,6 +198,7 @@ void NMSMaterialDecaySource::SetVerboseLevel(G4int verbose) {
 
 void NMSMaterialDecaySource::LoadSources() {
   // FIX: Check if possible
+  // FIX: Load AlphaN!!
 
   G4int verboseLevel = 2;
 

@@ -48,10 +48,9 @@ public:
   void SetSpontaneousFission(G4bool neutron, G4bool gamma);
   void SetAlphaDecay(G4bool status);
   void SetBetaDecay(G4bool status);
+  void SetAlphaNSource(G4bool status);
 
-  void UnsetAlphaN();
-
-  void SetAlphaNSet(NMSAlphaNSet* startpoints);
+  void SetAlphaNSet(NMSAlphaNFile filename = "std.alphan");
 
   void GeneratePrimaryVertex(G4Event*);
 
@@ -83,6 +82,7 @@ private:
   NMSMultipleDecaySource* sourceGenerator;
   NMSPosDistribution* posGenerator;
 
+  G4String alphaNFilename;
   NMSAlphaNSet* alphaNPoints;
 
   G4double startSourceTimeDistribution;
