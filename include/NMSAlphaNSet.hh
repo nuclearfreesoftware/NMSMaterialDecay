@@ -2,6 +2,8 @@
 #define NMSAlphaNSet_h 1
 
 #include <vector>
+#include <fstream>
+#include <iomanip>
 
 #include "NMSAlphaNReaction.hh"
 
@@ -10,7 +12,8 @@ public:
   NMSAlphaNSet();
   virtual ~NMSAlphaNSet();
 
-  // retrieve & store
+  void saveToFile(G4String filename);
+  void loadFromFile(G4String filename);
   
 };
 
